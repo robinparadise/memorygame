@@ -83,10 +83,10 @@ body {
   0% {
     -webkit-transform: rotateY(180deg);
   }
-  25% {
+  10% {
     -webkit-transform: rotateY(140deg);
   }
-  50% {
+  30% {
     -webkit-transform: rotateY(100deg);
   }
   75% {
@@ -100,10 +100,10 @@ body {
   0% {
     -moz-transform: rotateY(180deg);
   }
-  25% {
+  10% {
     -moz-transform: rotateY(140deg);
   }
-  50% {
+  30% {
     -moz-transform: rotateY(100deg);
   }
   75% {
@@ -117,10 +117,10 @@ body {
   0% {
     transform: rotateY(180deg);
   }
-  25% {
+  10% {
     transform: rotateY(140deg);
   }
-  50% {
+  30% {
     transform: rotateY(100deg);
   }
   75% {
@@ -188,10 +188,10 @@ body {
   -moz-animation-fill-mode:both;
   -ms-animation-fill-mode:both;
   animation-fill-mode:both;
-  -webkit-animation-duration:.5s;
-  -moz-animation-duration:.5s;
-  -ms-animation-duration:.5s;
-  animation-duration:.5s;
+  -webkit-animation-duration:.4s;
+  -moz-animation-duration:.4s;
+  -ms-animation-duration:.4s;
+  animation-duration:.4s;
   -webkit-animation-name: Pulse;
   -moz-animation-name: Pulse;
   animation-name: Pulse;
