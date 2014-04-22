@@ -1,19 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+  var courtain = document.getElementById("courtain");
+  var pad = document.getElementById("pad");
+  var square = document.getElementsByClassName("square");
+
   var resizePad = function(e) {
-    var win = $(window);
-    $('.pad').css({'width': win.width(), 'height': win.height()});
-    if (win.height() < win.width()) { 
-      $('.pad').css({'width': win.height()});
+    pad.style.width = window.innerWidth;
+    pad.style.height = window.innerHeight;
+    if (window.innerHeight < window.innerWidth) { 
+      pad.style.width = window.innerHeight;
     }
     else { 
-      $('.pad').css({'height': win.width()});
+      pad.style.height = window.innerWidth;
     }
-    $('.courtain').css({'top': $('.pad').height()/3});
-    $('.courtain').css({'font-size': $('.pad').height()/16});
+    courtain.style.fontSize = Number(pad.style.height.replace("px", "")) / 20;
+  }
+  window.onresize = function (event) {
+    resizePad();
   }
   resizePad();
-  $(window).on('resize', resizePad);
 
   Array.prototype.shuffle = function (){
     var i = this.length, j, temp;
@@ -46,27 +51,28 @@ document.addEventListener('DOMContentLoaded', function() {
     shuffle = shuffle.concat(cardsRandom1, cardsRandom2);
     shuffle.shuffle();
 
-    $(".pad li").attr("class","card square");
     if (version === "texts") {
-      for (i in shuffle) {
-        $(".pad li:eq("+i+")")
-        .attr('value', shuffle[i])
-        .append("<span> class='front'" + shuffle[i] + "</span>")
-        .append("<img class='back' src='img/back.jpg'></img>");
-      }
-    } else if (version === "images") {
-      for (i in shuffle) {
-        $(".pad li:eq("+i+")")
-        .attr('value', shuffle[i])
-        .append("<img class='front' src='img/pic" + shuffle[i] + ".jpg'></img>")
-        .append("<img class='back' src='img/back.jpg'></img>");
-      }
-    } else if (version === "preview") {
-      for (i in shuffle) {
-        $(".pad li:eq("+i+")")
-        .attr('value', shuffle[i])
-        .append("<img class='front' src='img/pic" + shuffle[i] + ".jpg'></img>");
-      }
+      Object.keys(shuffle).forEach(function(i) {
+        var li = pad.querySelectorAll("li")[i];
+        li.setAttribute('value', shuffle[i])
+        li.innerHTML = "<span> class='front'" + shuffle[i] + "</span>"
+          + "<img class='back' src='img/back.jpg'></img>";
+      });
+    }
+    else if (version === "images") {
+      Object.keys(shuffle).forEach(function(i) {
+        var li = pad.querySelectorAll("li")[i];
+        li.setAttribute('value', shuffle[i]);
+        li.innerHTML = "<img class='card front' src='img/pic" + shuffle[i] + ".jpg'></img>"
+          + "<img class='card back' src='img/back.jpg'></img>";
+      });
+    }
+    else if (version === "preview") {
+      Object.keys(shuffle).forEach(function(i) {
+        var li = pad.querySelectorAll("li")[Number(i)];
+        li.setAttribute('value', shuffle[Number(i)]);
+        li.innerHTML = "<img class='front' src='img/pic" + shuffle[i] + ".jpg'></img>";
+      });
     }
   }
 
@@ -74,53 +80,81 @@ document.addEventListener('DOMContentLoaded', function() {
   // Game Logic
 
   var endGame = function() {
-    if ($('.pad li.match').length === 16) {
-      $('.courtain h1').text("Congratulations!");
-      $('.courtain').show('puff');
+    if (pad.querySelector("li:not(.match)") === null) {
+      courtain.style.display = "block";
+      courtain.querySelector("h1").innerHTML = "Congratulations!";
       setTimeout(function() {
-        $('.courtain').hide('1s').slideDown();
-        $('.courtain h1').text("Restart")
+        courtain.querySelector("h1").innerHTML = "Restart";
       }, 2000);
     }
   }
 
-  var matchCard = function(elem) {
-    if ($(".pad .show").length != 2) { return }
+  var first;
+  var second;
 
-    if ($(".pad .show.first").attr('value') === $(".pad .show.second").attr('value')) {
-      $(".pad .show").addClass('match').unbind('click');
-      endGame();
-    } else {
-      $(".pad .show").addClass('fail');
+  var matchCard = function(elem) {
+
+    if (first && second) {
+      if (first.getAttribute("value") == second.getAttribute("value")) {
+        first.classList.add('match');
+        second.classList.add('match');
+        endGame();
+      }
+      else {
+        first.classList.add('fail');
+        second.classList.add('fail');
+      }
+
+      setTimeout(function() {
+        first.classList.remove('show');
+        second.classList.remove('show');
+        first.classList.remove('fail');
+        second.classList.remove('fail');
+        first = undefined;
+        second = undefined;
+      }, 600);
     }
-    $(".pad .show").removeClass('show');
+
   }
 
-  var startGameClick = function() {
-    $(".pad .square").click(function() {
-      var showed = $(".pad .show").length;
-      var failed = $(".pad .fail.second").length;
+  pad.addEventListener("click", function(e) {
 
-      if (failed > 0) {
-        $(".pad .card").removeClass("fail first second");
+    var card = e.target;
+
+    if (card.classList.contains("back") || card.classList.contains("front")) {
+      card = card.parentNode;
+    }
+
+    if (card.classList.contains("show") || card.classList.contains("match")) {
+      return;
+    }
+
+    if (card.classList.contains("card")) {
+
+      if (first === undefined) {
+        first = card;
+        card.classList.add('show');
       }
-      if (showed > 1) { return }
-
-      if (showed == 0) {
-        $(this).addClass('show first');
-      } else {
-        $(this).addClass('show second');
+      else if (second === undefined) {
+        second = card;
+        card.classList.add('show');
         matchCard();
       }
-    });
-  }
+      else {
+        first.classList.remove('fail');
+        second.classList.remove('fail');
+      }
+
+    }
+
+  });
 
   // Initialize
   startGame("preview");
-  $(".courtain").click(function() {
-    $(".courtain").slideUp();
+
+  courtain.addEventListener("click", function(e) {
+    courtain.style.display = "none";
     startGame("images");
-    startGameClick();
   });
 
 });

@@ -67,7 +67,7 @@ body {
 }
 
 
-.pad .card.show.first, .pad .card.fail.second {
+.pad .card.show, .pad .card.fail {
   -moz-animation-name: ShowCard;
   -moz-animation-duration: 0.4s;
   -moz-animation-timing-function: linear;
@@ -183,7 +183,7 @@ body {
 }
 
 
-.pad .card.match.first, .pad .card.match.second {
+.pad .card.match, .pad .card.match {
   -webkit-animation-fill-mode:both;
   -moz-animation-fill-mode:both;
   -ms-animation-fill-mode:both;
