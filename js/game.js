@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
       pad.style.height = window.innerWidth;
       courtain.style.top = pad.style.height * 3/8;
     }
-    courtain.style.fontSize = Number(pad.style.height.replace("px", "")) / 20;
+    courtain.style.top = pad.querySelector("li").offsetHeight * 1.5;
+    courtain.style.fontSize = pad.querySelector("li").offsetHeight * 2 + "%";
   }
   window.onresize = function (event) {
     resizePad();
