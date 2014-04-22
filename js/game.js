@@ -2,16 +2,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var courtain = document.getElementById("courtain");
   var pad = document.getElementById("pad");
-  var square = document.getElementsByClassName("square");
+  var square = document.getElementsByClassName("card");
 
   var resizePad = function(e) {
     pad.style.width = window.innerWidth;
     pad.style.height = window.innerHeight;
     if (window.innerHeight < window.innerWidth) { 
       pad.style.width = window.innerHeight;
+      courtain.style.top = pad.style.width * 3/8;
     }
     else { 
       pad.style.height = window.innerWidth;
+      courtain.style.top = pad.style.height * 3/8;
     }
     courtain.style.fontSize = Number(pad.style.height.replace("px", "")) / 20;
   }
@@ -54,7 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (version === "texts") {
       Object.keys(shuffle).forEach(function(i) {
         var li = pad.querySelectorAll("li")[i];
-        li.setAttribute('value', shuffle[i])
+        li.setAttribute('value', shuffle[i]);
+        li.className = "card";
         li.innerHTML = "<span> class='front'" + shuffle[i] + "</span>"
           + "<img class='back' src='img/back.jpg'></img>";
       });
@@ -63,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
       Object.keys(shuffle).forEach(function(i) {
         var li = pad.querySelectorAll("li")[i];
         li.setAttribute('value', shuffle[i]);
+        li.className = "card";
         li.innerHTML = "<img class='card front' src='img/pic" + shuffle[i] + ".jpg'></img>"
           + "<img class='card back' src='img/back.jpg'></img>";
       });
@@ -70,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
     else if (version === "preview") {
       Object.keys(shuffle).forEach(function(i) {
         var li = pad.querySelectorAll("li")[Number(i)];
+        li.className = "card";
         li.setAttribute('value', shuffle[Number(i)]);
         li.innerHTML = "<img class='front' src='img/pic" + shuffle[i] + ".jpg'></img>";
       });
