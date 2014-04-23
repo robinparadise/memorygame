@@ -16,6 +16,10 @@ body {
   padding: 0 0;
   overflow: hidden;
   position: relative;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+  user-select:none;
 }
 
 .pad .card {
@@ -30,6 +34,10 @@ body {
   background: #f2f2f2 none top left repeat-x;
   list-style-type: none;
   position: relative;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+  user-select:none;
 }
 
 .pad .card span {

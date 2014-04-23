@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+  window.addEventListener('load', function() {
+    FastClick.attach(document.body);
+  }, false);
+
   var courtain = document.getElementById("courtain");
   var pad = document.getElementById("pad");
   var square = document.getElementsByClassName("card");
@@ -123,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   }
 
-  pad.addEventListener("click", function(e) {
+  var flipCard = function(e) {
 
     var card = e.target;
 
@@ -150,10 +154,12 @@ document.addEventListener('DOMContentLoaded', function() {
         first.classList.remove('fail');
         second.classList.remove('fail');
       }
-
     }
-
-  });
+  };
+  
+  pad.addEventListener("click", function(e) {
+    setTimeout(function(){flipCard(e)}, 0);
+  }, false);
 
   // Initialize
   startGame("preview");
